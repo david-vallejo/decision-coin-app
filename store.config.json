@@ -3,7 +3,7 @@
   "apple": {
     "info": {
       "en-US": {
-        "title": "Decision Coin",
+        "title": "Decision Coin - Flip & Decide",
         "subtitle": "Flip a coin to decide",
         "description": "Decision Coin is a simple, elegant coin-flipping app that helps you make decisions. Features include:\n\n- Classic Heads/Tails mode\n- Custom A/B mode with your own labels\n- Realistic coin flip animation\n- Haptic feedback\n- Flip history tracking\n- Gesture controls (flick up to flip, shake to reset)\n\nPerfect for making quick decisions, settling debates, or just having fun!",
         "keywords": "coin flip,decision maker,random,heads tails,choice,picker",

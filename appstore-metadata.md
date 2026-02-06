@@ -1,7 +1,7 @@
 # App Store Metadata for Decision Coin
 
 ## App Name
-Decision Coin
+Decision Coin - Flip & Decide
 
 ## Subtitle (30 characters max)
 Quick Choices Made Simple
@@ -37,14 +37,10 @@ Download now and never be stuck on a decision again!
 coin flip,decision maker,random picker,heads tails,choice,flipper,decider,random,yes no,picker
 
 ## Support URL
-https://decisioncoin.app/support
-
-(Alternative: Create a simple GitHub Pages site or use your email as mailto:davidvallejo94@yahoo.com)
+https://decisioncoin.appwarehouse.io/support.html
 
 ## Privacy Policy URL
-https://decisioncoin.app/privacy
-
-(Host the privacy-policy.html file at this URL)
+https://decisioncoin.appwarehouse.io/privacy.html
 
 ## Copyright
 2026 David Vallejo
