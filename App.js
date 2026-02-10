@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   Keyboard,
+  StatusBar,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Accelerometer } from 'expo-sensors';
@@ -45,9 +46,11 @@ const App = () => {
   // UI state
   const [historyVisible, setHistoryVisible] = useState(false);
   
-  // Refs for shake detection
+  // Refs for shake detection and flick detection
   const shakeTimeoutRef = useRef(null);
   const lastShakeTimeRef = useRef(0);
+  const lastFlickTimeRef = useRef(0);
+  const prevYRef = useRef(0);
   const subscriptionRef = useRef(null);
 
   // Guard: Prevent overlapping flips
@@ -176,10 +179,24 @@ const App = () => {
             return;
           }
 
-          // Calculate acceleration magnitude
-          const acceleration = Math.sqrt(x * x + y * y + z * z);
-          const threshold = 1.5; // Adjust for sensitivity
           const now = Date.now();
+
+          // Detect upward flick: sudden spike in Y acceleration
+          // When phone is held upright, flicking up causes y to spike positive
+          const yDelta = y - prevYRef.current;
+          prevYRef.current = y;
+
+          if (yDelta > 0.8 && now - lastFlickTimeRef.current > 4000 && !flipInProgressRef.current) {
+            lastFlickTimeRef.current = now;
+            if (isMounted) {
+              flipCoin();
+            }
+            return;
+          }
+
+          // Calculate acceleration magnitude for shake detection
+          const acceleration = Math.sqrt(x * x + y * y + z * z);
+          const threshold = 1.5;
 
           // Guard: Prevent rapid shake triggers (debounce)
           if (acceleration > threshold && now - lastShakeTimeRef.current > 1000) {
@@ -256,19 +273,20 @@ const App = () => {
    * Allow at least 10 words (150 characters should be enough)
    */
   const handleCustomSideAChange = (text) => {
-    // Guard: Limit length to prevent issues but allow 10+ words (~150 chars)
-    const sanitized = text.trim().substring(0, 150);
+    // Guard: Limit length but don't trim - trimming removes spaces between words while typing
+    const sanitized = text.substring(0, 150);
     setCustomSideA(sanitized);
   };
 
   const handleCustomSideBChange = (text) => {
-    // Guard: Limit length to prevent issues but allow 10+ words (~150 chars)
-    const sanitized = text.trim().substring(0, 150);
+    // Guard: Limit length but don't trim - trimming removes spaces between words while typing
+    const sanitized = text.substring(0, 150);
     setCustomSideB(sanitized);
   };
 
   return (
     <GestureHandlerRootView style={styles.root}>
+      <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.container}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
@@ -332,6 +350,7 @@ const App = () => {
                 value={customSideA}
                 onChangeText={handleCustomSideAChange}
                 placeholder="Enter label for A (up to 150 characters)"
+                placeholderTextColor="rgba(255, 255, 255, 0.35)"
                 maxLength={150}
                 multiline={true}
                 numberOfLines={3}
@@ -345,6 +364,7 @@ const App = () => {
                 value={customSideB}
                 onChangeText={handleCustomSideBChange}
                 placeholder="Enter label for B (up to 150 characters)"
+                placeholderTextColor="rgba(255, 255, 255, 0.35)"
                 maxLength={150}
                 multiline={true}
                 numberOfLines={3}
@@ -400,6 +420,9 @@ const App = () => {
             • Tap "Flip Coin" or flick the coin upward to flip
           </Text>
           <Text style={styles.instructionText}>
+            • Flick your phone upward to toss the coin
+          </Text>
+          <Text style={styles.instructionText}>
             • Shake device or tap "Reset" to clear result
           </Text>
           <Text style={styles.instructionText}>
@@ -421,10 +444,11 @@ const App = () => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: '#2C3A47',
   },
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#2C3A47',
   },
   scrollContent: {
     flexGrow: 1,
@@ -439,22 +463,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333333',
+    color: '#FFFFFF',
   },
   historyButton: {
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#1B9CFC',
     borderRadius: 20,
   },
   historyButtonText: {
     fontSize: 16,
-    color: '#333333',
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   modeToggle: {
     flexDirection: 'row',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#1E2A34',
     borderRadius: 12,
     padding: 4,
     marginBottom: 20,
@@ -466,11 +490,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   modeButtonActive: {
-    backgroundColor: '#333333',
+    backgroundColor: '#1B9CFC',
   },
   modeButtonText: {
     fontSize: 16,
-    color: '#666666',
+    color: 'rgba(255, 255, 255, 0.5)',
     fontWeight: '600',
   },
   modeButtonTextActive: {
@@ -485,17 +509,17 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333333',
+    color: '#FFFFFF',
     marginBottom: 8,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#E5E5E5',
+    borderColor: '#3D4F5F',
     borderRadius: 12,
     padding: 16,
     fontSize: 16,
-    backgroundColor: '#FFFFFF',
-    color: '#333333',
+    backgroundColor: '#1E2A34',
+    color: '#FFFFFF',
     minHeight: 80,
     textAlignVertical: 'top',
   },
@@ -504,18 +528,18 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     paddingVertical: 20,
     paddingHorizontal: 30,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#1E2A34',
     borderRadius: 16,
   },
   resultLabel: {
     fontSize: 16,
-    color: '#666666',
+    color: 'rgba(255, 255, 255, 0.6)',
     marginBottom: 8,
   },
   resultText: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#333333',
+    color: '#FFFFFF',
   },
   buttonContainer: {
     marginTop: 20,
@@ -530,10 +554,10 @@ const styles = StyleSheet.create({
     minHeight: 56,
   },
   flipButton: {
-    backgroundColor: '#333333',
+    backgroundColor: '#1B9CFC',
   },
   resetButton: {
-    backgroundColor: '#666666',
+    backgroundColor: '#3D4F5F',
   },
   buttonDisabled: {
     opacity: 0.5,
@@ -546,12 +570,12 @@ const styles = StyleSheet.create({
   instructions: {
     marginTop: 40,
     padding: 20,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#1E2A34',
     borderRadius: 12,
   },
   instructionText: {
     fontSize: 14,
-    color: '#666666',
+    color: 'rgba(255, 255, 255, 0.6)',
     marginBottom: 8,
     lineHeight: 20,
   },

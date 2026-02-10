@@ -125,7 +125,7 @@ const HistoryPanel = ({ visible, onClose }) => {
               <Text style={styles.emptyText}>No flip history yet</Text>
             </View>
           ) : (
-            <>
+            <View style={styles.listWrapper}>
               <FlatList
                 data={history}
                 renderItem={renderHistoryItem}
@@ -144,7 +144,7 @@ const HistoryPanel = ({ visible, onClose }) => {
               >
                 <Text style={styles.clearButtonText}>Clear History</Text>
               </TouchableOpacity>
-            </>
+            </View>
           )}
         </View>
       </SafeAreaView>
@@ -155,14 +155,14 @@ const HistoryPanel = ({ visible, onClose }) => {
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     justifyContent: 'flex-end',
   },
   panel: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#2C3A47',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    maxHeight: '80%',
+    height: '75%',
     paddingBottom: 20,
   },
   header: {
@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: '#3D4F5F',
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333333',
+    color: '#FFFFFF',
   },
   closeButton: {
     width: 32,
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     fontSize: 24,
-    color: '#666666',
+    color: 'rgba(255, 255, 255, 0.6)',
   },
   loadingContainer: {
     padding: 40,
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#666666',
+    color: 'rgba(255, 255, 255, 0.6)',
   },
   emptyContainer: {
     padding: 40,
@@ -202,7 +202,10 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: '#999999',
+    color: 'rgba(255, 255, 255, 0.5)',
+  },
+  listWrapper: {
+    flex: 1,
   },
   historyList: {
     flex: 1,
@@ -216,19 +219,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
     paddingHorizontal: 20,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#1E2A34',
     borderRadius: 12,
     marginBottom: 12,
   },
   historySide: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333333',
+    color: '#FFFFFF',
     flex: 1,
   },
   historyTime: {
     fontSize: 14,
-    color: '#666666',
+    color: 'rgba(255, 255, 255, 0.5)',
     marginLeft: 12,
   },
   clearButton: {
