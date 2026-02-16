@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFFFFF',
+    textTransform: 'uppercase',
   },
   closeButton: {
     width: 32,

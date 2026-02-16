@@ -325,7 +325,7 @@ const App = () => {
             onPress={toggleMode}
             style={[
               styles.modeButton,
-              isCustomMode && styles.modeButtonActive,
+              isCustomMode && styles.modeButtonActiveCustom,
             ]}
             disabled={isFlipping}
           >
@@ -387,7 +387,7 @@ const App = () => {
         {side && (
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>Result:</Text>
-            <Text style={styles.resultText}>{getDisplayLabel()}</Text>
+            <Text style={[styles.resultText, { fontSize: getDisplayLabel().length > 20 ? 18 : getDisplayLabel().length > 10 ? 24 : 36 }]}>{getDisplayLabel()}</Text>
           </View>
         )}
 
@@ -461,15 +461,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#3b4c5c',
+    textTransform: 'uppercase',
+    flexShrink: 1,
   },
   historyButton: {
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor: '#1B9CFC',
-    borderRadius: 20,
+    backgroundColor: '#3ECFAC',
+    borderRadius: 4,
   },
   historyButtonText: {
     fontSize: 16,
@@ -482,15 +484,22 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 4,
     marginBottom: 20,
+    gap: 8,
   },
   modeButton: {
     flex: 1,
     paddingVertical: 12,
     alignItems: 'center',
     borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: '#3ECFAC',
+    backgroundColor: 'transparent',
   },
   modeButtonActive: {
-    backgroundColor: '#1B9CFC',
+    backgroundColor: '#3ECFAC',
+  },
+  modeButtonActiveCustom: {
+    backgroundColor: '#3ECFAC',
   },
   modeButtonText: {
     fontSize: 16,
@@ -527,9 +536,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 20,
     paddingVertical: 20,
-    paddingHorizontal: 30,
+    paddingHorizontal: 16,
     backgroundColor: '#1E2A34',
     borderRadius: 16,
+    width: '100%',
   },
   resultLabel: {
     fontSize: 16,
@@ -537,9 +547,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   resultText: {
-    fontSize: 36,
     fontWeight: 'bold',
     color: '#FFFFFF',
+    textTransform: 'uppercase',
+    textAlign: 'center',
   },
   buttonContainer: {
     marginTop: 20,
@@ -554,7 +565,7 @@ const styles = StyleSheet.create({
     minHeight: 56,
   },
   flipButton: {
-    backgroundColor: '#1B9CFC',
+    backgroundColor: '#3ECFAC',
   },
   resetButton: {
     backgroundColor: '#3D4F5F',
